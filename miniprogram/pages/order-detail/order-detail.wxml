@@ -1,0 +1,187 @@
+<view class="page detail-page">
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在翻小票…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="detail-head">
+      <view class="grow">
+        <view class="h1">订单详情</view>
+        <view class="detail-meta">{{createdText}} · {{order.orderNo}}</view>
+      </view>
+      <text class="status-pill status-{{order.status}}">{{statusLabel}}</text>
+    </view>
+
+    <view class="notice status-note">{{statusCopy}}<text wx:if="{{nudgeCount}}" class="nudge-count">已催 {{nudgeCount}} 次</text></view>
+
+    <view wx:if="{{actions.length}}" class="card action-card">
+      <view class="h3">该你了</view>
+      <view class="btn-row action-row">
+        <button
+          wx:for="{{actions}}"
+          wx:key="key"
+          class="btn btn-{{item.style}}"
+          data-key="{{item.key}}"
+          bindtap="onAction"
+        >{{item.label}}</button>
+      </view>
+    </view>
+
+    <view class="card timeline-card">
+      <view class="h3">进度</view>
+      <view class="timeline">
+        <view wx:for="{{timeline}}" wx:key="key" class="tl-item">
+          <view class="tl-rail">
+            <view class="tl-dot tl-{{item.state}}"></view>
+          </view>
+          <view class="tl-body">
+            <view class="tl-label">{{item.label}}<text wx:if="{{item.state == 'current'}}" class="tl-now">进行中</text></view>
+            <view class="tl-desc">{{item.desc}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{showPayment}}" class="card pay-card">
+      <view class="between pay-head">
+        <view>
+          <view class="pay-label">菜钱</view>
+          <view class="pay-amount">{{totalText}}</view>
+        </view>
+        <text class="status-pill status-{{order.status}}">{{payStatusLabel}}</text>
+      </view>
+      <view class="pay-hint">{{payHint}}</view>
+      <view class="pay-info">
+        <view class="pay-line">订单号：{{order.orderNo}}</view>
+        <view wx:if="{{paymentClaimedText}}" class="pay-line">报备转账：{{paymentClaimedText}}</view>
+        <view wx:if="{{paymentNote}}" class="pay-line">转账备注：{{paymentNote}}</view>
+        <view wx:if="{{paymentConfirmedText}}" class="pay-line">确认收款：{{paymentConfirmedText}}</view>
+        <view wx:if="{{paymentRejectReason}}" class="pay-line pay-reject">上次核对：{{paymentRejectReason}}</view>
+      </view>
+      <view class="btn-row pay-actions">
+        <button class="btn btn-ghost btn-sm" bindtap="onCopyPay">复制收款信息</button>
+        <button class="btn btn-ghost btn-sm" bindtap="onCopyOrderNo">复制订单号</button>
+      </view>
+    </view>
+
+    <view wx:if="{{showNotPaid}}" class="notice notice-red not-paid">还没过夸夸线，先别谈钱。</view>
+
+    <view wx:if="{{order.hasCustom}}" class="notice custom-order-note">
+      含自点菜：这一单的夸夸线是 {{order.passScore}} 分、最低 {{order.minLen}} 字。
+    </view>
+
+    <view class="receipt detail-receipt">
+      <view class="receipt-head">
+        <view class="grow">
+          <view class="receipt-no">夸夸食堂</view>
+          <view class="h3">点菜单</view>
+        </view>
+        <view class="stamp stamp-green">已点</view>
+      </view>
+      <view class="dashed"></view>
+      <view class="dish-row" wx:for="{{items}}" wx:key="dishId">
+        <text class="dish-emoji">{{item.emoji}}</text>
+        <view class="grow">
+          <view class="dish-name-row">
+            <text class="dish-name">{{item.name}}</text>
+            <text wx:if="{{item.custom}}" class="tag custom-order-tag">自点</text>
+          </view>
+          <view wx:if="{{item.custom && item.desc}}" class="dish-custom-desc">{{item.desc}}</view>
+          <view class="dish-qty">× {{item.qty}}</view>
+        </view>
+        <text class="dish-price">{{item.priceText}}</text>
+      </view>
+      <view class="dashed"></view>
+      <view class="receipt-total">
+        <text class="muted">合计</text>
+        <text class="money">{{totalText}}</text>
+      </view>
+      <view wx:if="{{note}}" class="receipt-note">备注：{{note}}</view>
+      <view class="receipt-foot">{{createdText}} · {{order.orderNo}}</view>
+    </view>
+
+    <view class="section-head">
+      <text class="h2">夸奖存档</text>
+      <text class="muted">{{rounds.length}} 轮</text>
+    </view>
+
+    <view
+      wx:for="{{rounds}}"
+      wx:key="round"
+      class="card round-card {{item.isLatest ? 'round-latest' : ''}}"
+    >
+      <view class="between round-head">
+        <view class="round-title">
+          <text class="round-no">第 {{item.round}} 轮</text>
+          <text class="round-score">{{item.score}} 分</text>
+          <text class="round-eff">有效 {{item.effLen}} 字</text>
+        </view>
+        <text class="tag">{{item.verdictLabel}}</text>
+      </view>
+      <text class="round-text">{{item.text}}</text>
+      <view wx:if="{{item.topic}}" class="round-topic">夸点：{{item.topic}}</view>
+      <view wx:if="{{item.demand}}" class="chef-demand">点名要听：{{item.demand}}</view>
+      <view wx:elif="{{item.reason}}" class="chef-reason">批语：{{item.reason}}</view>
+      <view wx:if="{{item.hardFailTexts.length}}" class="chips">
+        <text wx:for="{{item.hardFailTexts}}" wx:key="*this" class="chip chip-red">{{item}}</text>
+      </view>
+      <view wx:if="{{item.suggestions.length}}" class="round-suggestions">
+        <text wx:for="{{item.suggestions}}" wx:key="*this" class="round-suggestion">· {{item}}</text>
+      </view>
+      <view wx:if="{{item.isLatest}}" class="round-breakdown">
+        <score-bars breakdown="{{item.breakdown}}" compact="{{true}}" />
+      </view>
+      <view class="round-time">{{item.timeText}}</view>
+    </view>
+
+    <view class="detail-foot">夸夸食堂 · 先夸后吃</view>
+  </block>
+</view>
+
+<view wx:if="{{sheet.show}}" class="overlay" bindtap="onSheetClose">
+  <view class="sheet sheet-form" catchtap="noop">
+    <view class="sheet-title">{{sheet.title}}</view>
+    <view class="sheet-hint">{{sheet.hint}}</view>
+    <textarea
+      wx:if="{{sheet.showReason}}"
+      class="sheet-input"
+      maxlength="60"
+      value="{{sheet.reason}}"
+      placeholder="{{sheet.reasonPlaceholder}}"
+      data-field="reason"
+      bindinput="onSheetInput"
+      auto-height
+    />
+    <textarea
+      wx:if="{{sheet.showDemand}}"
+      class="sheet-input"
+      maxlength="80"
+      value="{{sheet.demand}}"
+      placeholder="{{sheet.demandPlaceholder}}"
+      data-field="demand"
+      bindinput="onSheetInput"
+      auto-height
+    />
+    <input
+      wx:if="{{sheet.showNote}}"
+      class="input sheet-note"
+      maxlength="60"
+      value="{{sheet.note}}"
+      placeholder="{{sheet.notePlaceholder}}"
+      data-field="note"
+      bindinput="onSheetInput"
+    />
+    <button
+      class="btn btn-primary btn-block"
+      loading="{{sheet.submitting}}"
+      disabled="{{sheet.submitting}}"
+      bindtap="onSheetSubmit"
+    >{{sheet.confirmText}}</button>
+    <button class="btn btn-ghost btn-block sheet-cancel" bindtap="onSheetClose">算了</button>
+  </view>
+</view>

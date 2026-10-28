@@ -1,0 +1,60 @@
+<view wx:if="{{show}}" class="mask" bindtap="onClose">
+  <view class="sheet" catchtap="noop">
+    <view class="sheet-head">
+      <view>
+        <view class="sheet-title">食堂规矩</view>
+        <view class="sheet-sub">丑话说在前面，饭才吃得香。</view>
+      </view>
+      <view class="close" bindtap="onClose">×</view>
+    </view>
+
+    <view class="rule">
+      <text class="rule-no">01</text>
+      <view class="rule-body">
+        <text class="rule-title">先夸，再吃</text>
+        <text class="rule-text">每次点菜都要写一段夸奖。夸奖由五项规则打分，达到厨师设定的满意线，才准付款。</text>
+      </view>
+    </view>
+
+    <view class="rule">
+      <text class="rule-no">02</text>
+      <view class="rule-body">
+        <text class="rule-title">厨师有最终否决权</text>
+        <text class="rule-text">过线了也可以被打回重夸；没过线也可能被破格准了。分数只是门槛，厨师的心情才是最终裁决。</text>
+      </view>
+    </view>
+
+    <view class="rule">
+      <text class="rule-no">03</text>
+      <view class="rule-body">
+        <text class="rule-title">菜钱走转账</text>
+        <text class="rule-text">个人小程序开不了微信支付。食客微信转账后点「我已转账」，厨师核对到账再「确认收款」，然后开火。</text>
+      </view>
+    </view>
+
+    <view class="rule">
+      <text class="rule-no">04</text>
+      <view class="rule-body">
+        <text class="rule-title">一次只做一单</text>
+        <text class="rule-text">从重夸到出锅，同一时间只允许一张进行中的订单。上一单结束，才能点下一单。</text>
+      </view>
+    </view>
+
+    <view class="rule">
+      <text class="rule-no">05</text>
+      <view class="rule-body">
+        <text class="rule-title">本店只接待两位</text>
+        <text class="rule-text">一个厨师，一个食客。第三个人进来只会看到「客满」。角色在开张时选定，App 内不提供重置。</text>
+      </view>
+    </view>
+
+    <view wx:if="{{role == 'chef'}}" class="chef-note">
+      你是厨师：可以调满意线、改菜单、确认收款、打回或破格。别把满意线调得太低，不然这店就没意思了。
+    </view>
+    <view wx:else class="chef-note">
+      你是食客：可以点菜、重夸、报转账、催一催。夸的时候提一道菜、一个动作、一件小事，分数会高很多。
+    </view>
+
+    <button class="btn" bindtap="onClose">知道了，开饭</button>
+  </view>
+</view>

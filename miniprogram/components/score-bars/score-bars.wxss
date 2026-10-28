@@ -1,0 +1,74 @@
+.bars {
+  width: 100%;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 14rpx;
+}
+
+.bar-label {
+  width: 72rpx;
+  flex-shrink: 0;
+  font-size: 23rpx;
+  color: #8A7A6B;
+}
+
+.bar-track {
+  flex: 1;
+  height: 16rpx;
+  border-radius: 8rpx;
+  background: #F1E6D7;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  background: #D94F2B;
+  transition: width 0.4s ease;
+}
+
+.fill-length {
+  background: #D94F2B;
+}
+
+.fill-specificity {
+  background: #E7A83D;
+}
+
+.fill-emotion {
+  background: #C96A7A;
+}
+
+.fill-novelty {
+  background: #6E8B6B;
+}
+
+.fill-expression {
+  background: #9C6B4A;
+}
+
+.bar-value {
+  width: 70rpx;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 22rpx;
+  color: #2A211B;
+  font-weight: 600;
+}
+
+.compact .bar-row {
+  margin-top: 8rpx;
+}
+
+.compact .bar-track {
+  height: 10rpx;
+}
+
+.compact .bar-label,
+.compact .bar-value {
+  font-size: 20rpx;
+}

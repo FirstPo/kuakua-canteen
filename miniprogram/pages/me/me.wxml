@@ -1,0 +1,195 @@
+<view class="page me-page">
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在照镜子…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="profile-card">
+      <view class="profile-avatar">{{user.emoji}}</view>
+      <view class="grow">
+        <view class="profile-name">{{user.nickname}}</view>
+        <view class="profile-role">{{roleLabel}}<text wx:if="{{partner}}"> · 和 {{partner.nickname}} 的两人食堂</text></view>
+        <view class="profile-joined">{{joinedText}} 入伙</view>
+      </view>
+      <button class="btn btn-ghost btn-sm edit-btn" bindtap="onOpenProfile">编辑</button>
+    </view>
+
+    <view class="me-stats">
+      <view class="me-stat">
+        <text class="me-stat-value">{{totalOrders}}</text>
+        <text class="me-stat-label">点过单</text>
+      </view>
+      <view class="me-stat">
+        <text class="me-stat-value">{{servedOrders}}</text>
+        <text class="me-stat-label">已出餐</text>
+      </view>
+      <view class="me-stat">
+        <text class="me-stat-value">{{maxScoreText}}</text>
+        <text class="me-stat-label">最高分</text>
+      </view>
+      <view class="me-stat">
+        <text class="me-stat-value">{{charsText}}</text>
+        <text class="me-stat-label">被夸字数</text>
+      </view>
+    </view>
+    <view class="me-stat-foot">平均夸 {{avgRoundsText}} 轮才吃上一顿。</view>
+
+    <view wx:if="{{isChef}}" class="card config-card">
+      <view class="between">
+        <text class="h3">夸夸标准</text>
+        <text class="tag">只有你能改</text>
+      </view>
+
+      <view class="slider-block">
+        <view class="between">
+          <text class="slider-label">满意线</text>
+          <text class="slider-value">{{passScore}} 分</text>
+        </view>
+        <slider
+          min="60"
+          max="100"
+          step="1"
+          value="{{passScore}}"
+          activeColor="#D94F2B"
+          backgroundColor="#EADCC9"
+          block-size="22"
+          bindchanging="onPassChange"
+          bindchange="onPassChange"
+        />
+      </view>
+
+      <view class="slider-block">
+        <view class="between">
+          <text class="slider-label">最低有效字数</text>
+          <text class="slider-value">{{minLen}} 字</text>
+        </view>
+        <slider
+          min="10"
+          max="50"
+          step="1"
+          value="{{minLen}}"
+          activeColor="#E7A83D"
+          backgroundColor="#EADCC9"
+          block-size="22"
+          bindchanging="onMinLenChange"
+          bindchange="onMinLenChange"
+        />
+      </view>
+
+      <view class="config-hint">现在要写满 {{minLen}} 个有效字，才有机会到 {{passScore}} 分。</view>
+      <button
+        class="btn btn-primary btn-block config-save"
+        loading="{{savingConfig}}"
+        disabled="{{savingConfig}}"
+        bindtap="onSaveConfig"
+      >保存标准</button>
+    </view>
+
+    <view wx:else class="card config-card">
+      <view class="between">
+        <text class="h3">夸夸标准</text>
+        <text class="tag">厨师定的</text>
+      </view>
+      <view class="config-read">满意线 {{passScore}} 分 · 最少 {{minLen}} 个有效字</view>
+      <view class="config-hint">分数是规则算的；过线后厨师还能打回，没过线也可能被破格准了。</view>
+    </view>
+
+    <view class="card link-row" bindtap="onKitchenRow">
+      <view class="grow">
+        <view class="h3">今日食堂</view>
+        <view class="muted">{{kitchenStatusText}} · {{kitchenNote || '没写公告'}}</view>
+      </view>
+      <text wx:if="{{isChef}}" class="arrow">›</text>
+    </view>
+
+    <view class="card link-row" bindtap="onOpenRules">
+      <view class="grow">
+        <view class="h3">食堂规矩</view>
+        <view class="muted">先夸后吃，厨师有最终否决权。</view>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+
+    <view wx:if="{{isMock}}" class="card mock-card">
+      <view class="between">
+        <text class="h3">演示模式</text>
+        <text class="tag">仅本机</text>
+      </view>
+      <view class="mock-note">数据只存在这台手机的微信里，不是双人同步。真要两个人用，按 README 接微信云开发。</view>
+
+      <view class="mock-row">
+        <view class="grow">
+          <view class="mock-title">当前身份</view>
+          <view class="muted">{{roleLabel}}</view>
+        </view>
+        <button
+          class="btn btn-ghost btn-sm"
+          loading="{{mockBusy == 'switch'}}"
+          disabled="{{mockBusy != ''}}"
+          bindtap="onSwitchRole"
+        >切成{{nextRoleLabel}}</button>
+      </view>
+
+      <view class="btn-row mock-actions">
+        <button
+          class="btn btn-ghost"
+          loading="{{mockBusy == 'seed'}}"
+          disabled="{{mockBusy != ''}}"
+          bindtap="onSeedDemo"
+        >载入演示数据</button>
+        <button
+          class="btn btn-danger"
+          loading="{{mockBusy == 'reset'}}"
+          disabled="{{mockBusy != ''}}"
+          bindtap="onResetDemo"
+        >清空演示</button>
+      </view>
+    </view>
+
+    <view class="card about-card">
+      <view class="about-title">夸夸食堂 · v{{version}}</view>
+      <view class="about-line">{{isMock ? '演示模式 · 数据在本机' : '云端模式 · 数据在微信云开发'}}</view>
+      <view wx:if="{{!isMock && cloudEnv}}" class="about-line">环境：{{cloudEnv}}</view>
+      <view class="about-line">只给两个人用，不公开发布。</view>
+    </view>
+
+    <view class="me-foot">先夸，再吃。</view>
+  </block>
+</view>
+
+<view wx:if="{{profile.show}}" class="overlay" bindtap="onCloseProfile">
+  <view class="sheet profile-sheet" catchtap="noop">
+    <view class="sheet-title">编辑资料</view>
+    <view class="sheet-hint">不用微信授权，自己起个称呼、挑个图标。</view>
+    <input
+      class="input profile-input"
+      maxlength="{{maxNickname}}"
+      value="{{profile.nickname}}"
+      placeholder="称呼"
+      bindinput="onProfileInput"
+    />
+    <view class="avatar-grid">
+      <text
+        wx:for="{{avatars}}"
+        wx:key="*this"
+        class="avatar-cell {{item == profile.emoji ? 'avatar-on' : ''}}"
+        data-emoji="{{item}}"
+        bindtap="onAvatar"
+      >{{item}}</text>
+    </view>
+    <button
+      class="btn btn-primary btn-block"
+      loading="{{profile.saving}}"
+      disabled="{{profile.saving}}"
+      bindtap="onSaveProfile"
+    >保存</button>
+    <button class="btn btn-ghost btn-block sheet-cancel" bindtap="onCloseProfile">算了</button>
+  </view>
+</view>
+
+<rules-sheet show="{{showRules}}" role="{{role}}" bind:close="onCloseRules" />

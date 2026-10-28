@@ -1,0 +1,21 @@
+<view class="order-card" bindtap="onTap">
+  <view class="head">
+    <view class="grow">
+      <view class="no">{{order.orderNo}}</view>
+      <view class="dishes">{{dishText}}</view>
+    </view>
+    <view class="status-pill status-{{order.status}}">{{order.statusLabel}}</view>
+  </view>
+
+  <view class="meta">
+    <text class="price">{{priceText}}</text>
+    <text class="time">{{timeText}}</text>
+    <text wx:if="{{order.roundCount > 1}}" class="round">第 {{order.roundCount}} 轮</text>
+    <text class="score">{{order.latestScore}} 分</text>
+  </view>
+
+  <view class="foot">
+    <text class="copy">{{copy}}</text>
+    <text wx:if="{{actionText}}" class="action">{{actionText}} ›</text>
+  </view>
+</view>

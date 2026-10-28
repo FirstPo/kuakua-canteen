@@ -1,0 +1,68 @@
+<view class="page menu-page">
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在翻菜单…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="menu-head">
+      <view class="grow">
+        <view class="h1">菜单</view>
+        <view class="menu-sub">{{availableCount}} / {{totalCount}} 道在售</view>
+      </view>
+      <button class="btn btn-primary btn-sm" bindtap="onAdd">＋ 新增</button>
+    </view>
+
+    <view wx:if="{{dishes.length}}" class="dish-list">
+      <view
+        wx:for="{{dishes}}"
+        wx:key="_id"
+        class="card dish-card {{item.available ? '' : 'dish-off'}}"
+      >
+        <view class="dish-main" data-id="{{item._id}}" bindtap="onEdit">
+          <text class="dish-emoji">{{item.emoji}}</text>
+          <view class="grow">
+            <view class="dish-name-row">
+              <text class="dish-name">{{item.name}}</text>
+              <text wx:if="{{!item.available}}" class="off-tag">售罄</text>
+            </view>
+            <view class="dish-desc">{{item.desc || '还没写介绍'}}</view>
+            <view class="dish-meta">
+              <text class="cat-tag">{{item.category}}</text>
+              <text class="dish-price">{{item.priceText}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="dish-ops">
+          <view class="op-toggle">
+            <text class="op-label">在售</text>
+            <switch
+              checked="{{item.available}}"
+              disabled="{{busyId == item._id}}"
+              color="#6E8B6B"
+              data-id="{{item._id}}"
+              bindchange="onToggle"
+            />
+          </view>
+          <view class="op-btns">
+            <button class="mini-btn" data-id="{{item._id}}" bindtap="onEdit">编辑</button>
+            <button class="mini-btn mini-danger" data-id="{{item._id}}" bindtap="onDelete">删除</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <empty-state
+      wx:else
+      emoji="🍽️"
+      title="菜单还是空的"
+      desc="先加两道拿手菜，她才有得点。"
+      actionText="新增一道"
+      bind:action="onAdd"
+    />
+  </block>
+</view>

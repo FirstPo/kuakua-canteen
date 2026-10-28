@@ -1,0 +1,103 @@
+<view class="page wall-page">
+  <view class="wall-head">
+    <view class="h1">夸夸墙</view>
+    <view class="wall-sub">每一轮夸奖都留档，赖不掉。</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在贴小纸条…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="wall-stats">
+      <view class="wall-stat">
+        <text class="wall-value">{{maxScoreText}}</text>
+        <text class="wall-label">最高分</text>
+      </view>
+      <view class="wall-stat">
+        <text class="wall-value">{{charsText}}</text>
+        <text class="wall-label">累计被夸字数</text>
+      </view>
+      <view class="wall-stat">
+        <text class="wall-value">{{avgRoundsText}}</text>
+        <text class="wall-label">平均轮数</text>
+      </view>
+    </view>
+    <view class="wall-served">已经吃上 {{servedText}} 顿夸来的饭。</view>
+
+    <view class="wall-tabs">
+      <view
+        class="wall-tab {{activeTab == 'high' ? 'wall-tab-high' : ''}}"
+        data-tab="high"
+        bindtap="onTab"
+      >
+        <text class="wall-tab-name">高光时刻</text>
+        <text class="wall-tab-count">{{highCount}}</text>
+      </view>
+      <view
+        class="wall-tab {{activeTab == 'low' ? 'wall-tab-low' : ''}}"
+        data-tab="low"
+        bindtap="onTab"
+      >
+        <text class="wall-tab-name">翻车现场</text>
+        <text class="wall-tab-count">{{lowCount}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{items.length}}" class="wall-list">
+      <view
+        wx:for="{{items}}"
+        wx:key="key"
+        class="card wall-card {{activeTab == 'high' ? 'wall-good' : 'wall-bad'}}"
+        data-order="{{item.orderId}}"
+        bindtap="onItemTap"
+      >
+        <view class="between">
+          <view class="wall-score-line">
+            <text class="wall-score">{{item.score}}</text>
+            <text class="wall-score-unit">分</text>
+          </view>
+          <text class="tag">{{item.verdictLabel}}</text>
+        </view>
+
+        <text class="wall-text">{{item.text}}</text>
+
+        <view class="wall-meta">
+          <text wx:if="{{item.dishesText}}">{{item.dishesText}}</text>
+          <text>第 {{item.round}} 轮</text>
+          <text>{{item.timeText}}</text>
+        </view>
+
+        <view wx:if="{{item.demand}}" class="wall-demand">点名要听：{{item.demand}}</view>
+        <view wx:elif="{{item.reason}}" class="wall-reason">{{item.reason}}</view>
+
+        <view wx:if="{{item.hardFailTexts.length}}" class="chips">
+          <text wx:for="{{item.hardFailTexts}}" wx:key="*this" class="chip chip-red">{{item}}</text>
+        </view>
+
+        <view wx:if="{{item.suggestions.length}}" class="wall-suggestions">
+          <text wx:for="{{item.suggestions}}" wx:key="*this" class="wall-suggestion">· {{item}}</text>
+        </view>
+
+        <view class="wall-foot">
+          <text class="wall-order">{{item.orderNo}}</text>
+          <text class="wall-link">看订单 ›</text>
+        </view>
+      </view>
+    </view>
+
+    <empty-state
+      wx:else
+      emoji="{{activeTab == 'high' ? '💌' : '🫠'}}"
+      title="{{activeTab == 'high' ? '还没有高光时刻' : '还没有翻车现场'}}"
+      desc="{{activeTab == 'high' ? '等第一轮过线的夸奖贴上来。' : '说明还没人被打回过，或者还没开始点菜。'}}"
+      actionText="{{role == 'chef' ? '回厨房' : '去点菜'}}"
+      bind:action="onEmptyAction"
+    />
+  </block>
+</view>

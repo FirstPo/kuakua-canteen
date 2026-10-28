@@ -1,0 +1,9 @@
+<view class="bars {{compact ? 'compact' : ''}}">
+  <view class="bar-row" wx:for="{{bars}}" wx:key="key">
+    <text class="bar-label">{{item.label}}</text>
+    <view class="bar-track">
+      <view class="bar-fill fill-{{item.key}}" style="width: {{item.percent}}%;"></view>
+    </view>
+    <text class="bar-value">{{item.value}}/{{item.max}}</text>
+  </view>
+</view>

@@ -1,0 +1,232 @@
+<view class="page page-cart home-page">
+  <view class="top">
+    <view class="grow">
+      <view class="h1">今天想吃什么？</view>
+      <view class="top-sub">点完菜，记得把厨师夸高兴。</view>
+    </view>
+    <view wx:if="{{partner}}" class="chef-chip">
+      <view class="avatar avatar-sm">{{partner.emoji}}</view>
+      <view class="chef-chip-text">
+        <text class="chef-chip-name">{{partner.nickname}}</text>
+        <text class="chef-chip-role">掌勺</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在翻菜单…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="load">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="kitchen-line">
+      <view class="pill {{kitchenOpen ? 'pill-open' : 'pill-closed'}}">{{kitchenOpen ? '今日营业' : '今日歇业'}}</view>
+      <text wx:if="{{kitchenNote}}" class="kitchen-note">{{kitchenNote}}</text>
+      <text wx:else class="kitchen-note">{{kitchenOpen ? '灶上有火，慢慢点。' : '厨师休息，改天再来。'}}</text>
+    </view>
+
+    <view wx:if="{{activeOrder}}" class="active-card" bindtap="onActiveTap">
+      <view class="active-head">
+        <view class="grow">
+          <view class="active-label">进行中的订单</view>
+          <view class="active-dishes">{{activeOrder.dishText}}</view>
+        </view>
+        <view class="status-pill status-{{activeOrder.status}}">{{activeOrder.statusLabel}}</view>
+      </view>
+      <view class="active-meta">
+        <text class="active-score">{{activeOrder.latestScore}} 分</text>
+        <text wx:if="{{activeOrder.roundCount > 1}}" class="active-round">第 {{activeOrder.roundCount}} 轮</text>
+        <text class="active-money">{{activeOrder.totalText}}</text>
+        <text class="active-action">{{activeOrder.action}} ›</text>
+      </view>
+      <view class="active-copy">{{activeOrder.copy}}</view>
+    </view>
+
+    <view wx:if="{{!kitchenOpen}}" class="notice notice-red closed-note">
+      厨师今天歇业。已经在下锅的单子会继续做完，新单明天请早。
+    </view>
+
+    <view wx:if="{{kitchenOpen && !activeOrder}}" class="custom-cta" bindtap="onOpenCustom">
+      <view class="custom-cta-emoji">✍️</view>
+      <view class="grow">
+        <view class="custom-cta-title">菜单上没有？自己点一道</view>
+        <view class="custom-cta-sub">自点菜要把夸夸写得更狠：满意线 {{customPassScore}} 分，最低 {{customMinLen}} 字。</view>
+      </view>
+      <text class="custom-cta-plus">＋</text>
+    </view>
+
+    <view wx:if="{{customItems.length}}" class="section custom-list">
+      <view class="custom-head">
+        <text class="h2">你自点的菜</text>
+        <text class="custom-head-note">夸夸线 {{passScore}} 分</text>
+      </view>
+      <view class="dish-card custom-card" wx:for="{{customItems}}" wx:key="id">
+        <view class="dish-emoji">{{item.emoji}}</view>
+        <view class="dish-main">
+          <view class="dish-head">
+            <text class="dish-name">{{item.name}}</text>
+            <text class="tag custom-tag">自点</text>
+          </view>
+          <text class="dish-desc">{{item.desc || '菜单外单点，厨师看着做。'}}</text>
+          <view class="dish-foot">
+            <text class="dish-price">{{item.priceText}}</text>
+            <view class="qty">
+              <view class="qty-btn" data-id="{{item.id}}" bindtap="onMinus">−</view>
+              <text class="qty-num">{{item.qty}}</text>
+              <view class="qty-btn add" data-id="{{item.id}}" bindtap="onAdd">+</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="cat-row">
+        <view
+          wx:for="{{categories}}"
+          wx:key="*this"
+          class="cat {{activeCategory == item ? 'active' : ''}}"
+          data-category="{{item}}"
+          bindtap="onCategory"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="section menu-list">
+      <block wx:for="{{dishes}}" wx:key="_id">
+        <view
+          wx:if="{{activeCategory == '全部' || item.category == activeCategory}}"
+          class="dish-card {{item.available ? '' : 'sold-out'}}"
+        >
+          <view class="dish-emoji">{{item.emoji}}</view>
+          <view class="dish-main">
+            <view class="dish-head">
+              <text class="dish-name">{{item.name}}</text>
+              <text class="tag">{{item.category}}</text>
+              <text wx:if="{{!item.available}}" class="soldout-tag">售罄</text>
+            </view>
+            <text class="dish-desc">{{item.desc}}</text>
+            <view class="dish-foot">
+              <text class="dish-price">{{item.priceText}}</text>
+              <view class="qty">
+                <view
+                  wx:if="{{item.qty > 0 && item.available}}"
+                  class="qty-btn"
+                  data-id="{{item._id}}"
+                  bindtap="onMinus"
+                >−</view>
+                <text wx:if="{{item.qty > 0}}" class="qty-num">{{item.qty}}</text>
+                <view
+                  wx:if="{{item.available}}"
+                  class="qty-btn add"
+                  data-id="{{item._id}}"
+                  bindtap="onAdd"
+                >+</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <empty-state
+        wx:if="{{!dishes.length}}"
+        emoji="🍽️"
+        title="菜单还是空的"
+        desc="让厨师先去厨房加两道菜。"
+      />
+    </view>
+
+    <view class="footer-note">本店不收现金，只收夸奖和转账。</view>
+  </block>
+
+  <view class="cart-bar">
+    <view class="cart-info">
+      <view class="cart-badge">{{cartCount}}</view>
+      <view class="cart-text">
+        <text class="cart-label">已点</text>
+        <text class="cart-total">{{cartTotalText}}</text>
+      </view>
+    </view>
+    <button
+      wx:if="{{activeOrder}}"
+      class="cart-btn active-btn"
+      bindtap="onActiveTap"
+    >看进行中的订单</button>
+    <button
+      wx:else
+      class="cart-btn"
+      disabled="{{!canCheckout}}"
+      bindtap="onCheckout"
+    >{{kitchenOpen ? '去夸夸他' : '今日歇业'}}</button>
+  </view>
+
+  <view wx:if="{{customForm.show}}" class="overlay" bindtap="onCloseCustom">
+    <view class="sheet custom-sheet" catchtap="noop">
+      <view class="sheet-title">自己点一道</view>
+      <view class="sheet-hint">菜单外单点，价格你先出，厨师嫌少可以打回。这单夸夸线会提到 {{customPassScore}} 分、最低 {{customMinLen}} 字。</view>
+
+      <view class="custom-field">
+        <text class="custom-label">菜名</text>
+        <input
+          class="input"
+          maxlength="{{maxCustomName}}"
+          value="{{customForm.name}}"
+          placeholder="比如：红烧排骨"
+          data-field="name"
+          bindinput="onCustomInput"
+        />
+      </view>
+
+      <view class="custom-field">
+        <text class="custom-label">想怎么吃（可不填）</text>
+        <input
+          class="input"
+          maxlength="{{maxCustomDesc}}"
+          value="{{customForm.desc}}"
+          placeholder="比如：多放土豆，少放辣"
+          data-field="desc"
+          bindinput="onCustomInput"
+        />
+      </view>
+
+      <view class="custom-field">
+        <text class="custom-label">你出多少钱</text>
+        <input
+          class="input"
+          type="digit"
+          maxlength="8"
+          value="{{customForm.priceInput}}"
+          placeholder="比如：25"
+          data-field="priceInput"
+          bindinput="onCustomInput"
+        />
+        <view class="custom-hint">1–999 元，整数或两位小数。</view>
+      </view>
+
+      <view class="custom-field">
+        <text class="custom-label">图标</text>
+        <view class="emoji-grid custom-emoji-grid">
+          <text
+            wx:for="{{emojis}}"
+            wx:key="*this"
+            class="emoji-cell {{item == customForm.emoji ? 'active' : ''}}"
+            data-emoji="{{item}}"
+            bindtap="onCustomEmoji"
+          >{{item}}</text>
+        </view>
+      </view>
+
+      <button
+        class="btn btn-primary btn-block custom-submit"
+        loading="{{customForm.submitting}}"
+        disabled="{{customForm.submitting}}"
+        bindtap="onCustomSubmit"
+      >加进购物车</button>
+      <button class="btn btn-ghost btn-block custom-cancel" bindtap="onCloseCustom">算了</button>
+    </view>
+  </view>
+</view>

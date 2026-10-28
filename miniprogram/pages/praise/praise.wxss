@@ -1,0 +1,213 @@
+.praise-page {
+  padding-top: 30rpx;
+}
+
+.praise-head {
+  padding: 6rpx 4rpx 22rpx;
+}
+
+.praise-sub {
+  margin-top: 8rpx;
+  font-size: 25rpx;
+  color: #8A7A6B;
+}
+
+.loading-card {
+  min-height: 180rpx;
+}
+
+.retry {
+  margin-top: 24rpx;
+}
+
+.previous-card {
+  border-color: #F2C1B4;
+  background: #FFF9F2;
+}
+
+.chef-demand {
+  margin-top: 14rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 18rpx;
+  background: #FBE9E4;
+  color: #8E3218;
+  font-size: 26rpx;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.hard-fail-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-top: 14rpx;
+}
+
+.hard-fail {
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background: #FBE9E4;
+  color: #B93B1B;
+  font-size: 20rpx;
+}
+
+.suggestion-list {
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.suggestion {
+  font-size: 23rpx;
+  line-height: 1.55;
+  color: #6F6155;
+}
+
+.order-preview {
+  margin-top: 4rpx;
+}
+
+.items {
+  margin-top: 18rpx;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  padding: 12rpx 0;
+}
+
+.item-emoji {
+  width: 54rpx;
+  font-size: 34rpx;
+  text-align: center;
+}
+
+.item-name {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.item-qty {
+  margin-left: 8rpx;
+  font-size: 22rpx;
+  color: #8A7A6B;
+}
+
+.item-price {
+  font-size: 25rpx;
+  color: #2A211B;
+  font-weight: 600;
+}
+
+.prompt-card {
+  margin-top: 22rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 24rpx;
+  background: #FDF1D8;
+  border: 2rpx dashed #E2BF7B;
+}
+
+.prompt-label {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #9A6A12;
+  letter-spacing: 1rpx;
+}
+
+.prompt-text {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 27rpx;
+  line-height: 1.6;
+  color: #6F4B12;
+}
+
+.demand-note {
+  margin-top: 18rpx;
+}
+
+.editor-card {
+  margin-top: 22rpx;
+  padding: 24rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #EADCC9;
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 0 rgba(42, 33, 27, 0.05);
+}
+
+.editor-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-bottom: 14rpx;
+}
+
+.editor-count {
+  font-size: 22rpx;
+  color: #D94F2B;
+  font-weight: 600;
+}
+
+.praise-input {
+  width: 100%;
+  min-height: 250rpx;
+  padding: 20rpx;
+  background: #FFFCF6;
+  border: 2rpx solid #EADCC9;
+  border-radius: 18rpx;
+  font-size: 29rpx;
+  line-height: 1.7;
+  color: #2A211B;
+}
+
+.editor-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+  margin-top: 10rpx;
+}
+
+.editor-hint {
+  font-size: 21rpx;
+  color: #8A7A6B;
+}
+
+.editor-raw {
+  font-size: 21rpx;
+  color: #8A7A6B;
+}
+
+.note-block {
+  margin-top: 8rpx;
+}
+
+.note-readonly {
+  margin-top: 20rpx;
+  background: #F4E8D8;
+  color: #6F6155;
+}
+
+.submit {
+  margin-top: 30rpx;
+}
+
+.custom-threshold {
+  margin-bottom: 20rpx;
+}
+
+.item-name-line {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.custom-item-tag {
+  background: #FDF1D8;
+  color: #8A5A00;
+  flex-shrink: 0;
+}

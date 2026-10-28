@@ -1,0 +1,122 @@
+<view class="page praise-page">
+  <view class="praise-head">
+    <view class="h1">{{mode == 'new' ? '先夸，再吃' : '再来一轮'}}</view>
+    <view class="praise-sub">夸到 {{passScore}} 分，厨师才开火。</view>
+  </view>
+
+  <view wx:if="{{hasCustom}}" class="notice custom-threshold">
+    这单有自点菜：满意线提到 {{passScore}} 分，最低 {{minLen}} 字。菜单外的菜，得夸得更狠。
+  </view>
+
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在摆碗筷…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{previous}}" class="card previous-card">
+      <view class="between">
+        <view class="h3">上一轮 {{previous.score}} 分</view>
+        <text class="tag">{{previous.verdictLabel}}</text>
+      </view>
+      <view wx:if="{{previous.demand}}" class="chef-demand">“{{previous.demand}}”</view>
+      <view wx:elif="{{previous.reason}}" class="chef-demand">“{{previous.reason}}”</view>
+      <view wx:if="{{previous.hardFailTexts.length}}" class="hard-fail-row">
+        <text wx:for="{{previous.hardFailTexts}}" wx:key="*this" class="hard-fail">{{item}}</text>
+      </view>
+      <view wx:if="{{previous.suggestions.length}}" class="suggestion-list">
+        <text wx:for="{{previous.suggestions}}" wx:key="*this" class="suggestion">· {{item}}</text>
+      </view>
+    </view>
+
+    <view class="receipt order-preview">
+      <view class="receipt-head">
+        <view class="grow">
+          <view class="receipt-no">{{mode == 'new' ? '本次点单' : '订单 ' + orderNo}}</view>
+          <view class="h3">{{mode == 'new' ? '新订单' : '重夸这一单'}}</view>
+        </view>
+        <view class="stamp stamp-gold">{{mode == 'new' ? '待夸' : '重夸'}}</view>
+      </view>
+
+      <view class="items">
+        <view class="item" wx:for="{{items}}" wx:key="dishId">
+          <text class="item-emoji">{{item.emoji}}</text>
+          <view class="grow">
+            <view class="item-name-line">
+              <text class="item-name">{{item.name}}</text>
+              <text wx:if="{{item.custom}}" class="tag custom-item-tag">自点</text>
+            </view>
+            <text class="item-qty">× {{item.qty}}</text>
+          </view>
+          <text class="item-price">{{item.priceText}}</text>
+        </view>
+      </view>
+
+      <view class="dashed"></view>
+      <view class="receipt-total">
+        <text class="muted">合计</text>
+        <text class="money">{{totalText}}</text>
+      </view>
+    </view>
+
+    <view class="prompt-card">
+      <view class="between">
+        <text class="prompt-label">这轮可以夸</text>
+        <text class="link" bindtap="onNewPrompt">换一个</text>
+      </view>
+      <text class="prompt-text">{{prompt}}</text>
+    </view>
+
+    <view wx:if="{{previous && previous.demand}}" class="notice notice-red demand-note">
+      厨师点名要听：{{previous.demand}}
+    </view>
+
+    <view class="editor-card">
+      <view class="editor-title">
+        <text class="h3">你的夸奖</text>
+        <text class="editor-count">有效 {{effLen}} 字 · 最低 {{minLen}} 字</text>
+      </view>
+      <textarea
+        class="praise-input"
+        maxlength="{{maxLen}}"
+        value="{{praise}}"
+        placeholder="比如：你颠勺的样子真帅，油泼面的辣子香得我直咽口水，谢谢你每天给我做饭…"
+        bindinput="onPraise"
+        auto-height
+        cursor-spacing="40"
+      />
+      <view class="editor-foot">
+        <text class="editor-hint">标点、空格、表情不算有效字数。</text>
+        <text class="editor-raw">{{rawLen}} / {{maxLen}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{mode == 'new'}}" class="note-block">
+      <text class="label">给厨师的话（口味、忌口，可不填）</text>
+      <input
+        class="input"
+        maxlength="60"
+        value="{{note}}"
+        placeholder="比如：少放辣，多放香菜"
+        bindinput="onNote"
+      />
+    </view>
+
+    <view wx:else class="notice note-readonly">
+      订单备注：{{note || '无'}}
+    </view>
+
+    <button
+      class="btn btn-primary btn-block submit"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+      bindtap="onSubmit"
+    >{{mode == 'new' ? '交卷，等开分' : '再交一次'}}</button>
+
+    <view class="footer-note">提一道菜、一个动作、一件小事，分数会高很多。</view>
+  </block>
+</view>

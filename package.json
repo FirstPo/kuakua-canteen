@@ -1,0 +1,18 @@
+{
+  "name": "kuakua-canteen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "只属于两个人的点菜小程序：先夸，再吃。",
+  "scripts": {
+    "configure": "node scripts/configure.js",
+    "sync": "node scripts/sync-shared.js",
+    "sync:check": "node scripts/sync-shared.js --check",
+    "test": "node scripts/sync-shared.js && node --test tests/*.test.js",
+    "test:watch": "node --test --watch tests/*.test.js",
+    "validate": "node scripts/sync-shared.js --check && node scripts/validate-project.js",
+    "check": "npm test && npm run validate"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

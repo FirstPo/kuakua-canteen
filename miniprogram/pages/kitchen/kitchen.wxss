@@ -1,0 +1,225 @@
+.kitchen-page {
+  padding-top: 26rpx;
+}
+
+.loading-card {
+  min-height: 200rpx;
+}
+
+.retry {
+  margin-top: 24rpx;
+}
+
+.kitchen-head {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 6rpx 4rpx 22rpx;
+}
+
+.greeting {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #2A211B;
+}
+
+.kitchen-sub {
+  margin-top: 6rpx;
+  font-size: 23rpx;
+  color: #8A7A6B;
+}
+
+.chef-avatar {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 28rpx;
+  background: #FDF1D8;
+  border: 2rpx solid #EBD3A1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+}
+
+.open-card {
+  transition: background 0.2s;
+}
+
+.open-on {
+  background: #FFF9EC;
+  border-color: #EBD3A1;
+}
+
+.open-off {
+  background: #F2EEE8;
+}
+
+.open-hint {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #8A7A6B;
+  line-height: 1.5;
+}
+
+.note-edit {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 18rpx;
+}
+
+.note-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.note-save {
+  flex: none;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14rpx;
+  margin-top: 6rpx;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 24rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #EADCC9;
+}
+
+.stat-value {
+  font-size: 38rpx;
+  font-weight: 900;
+  color: #D94F2B;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 21rpx;
+  color: #8A7A6B;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 32rpx 4rpx 14rpx;
+}
+
+.active-card {
+  border-color: #F0C4B7;
+  background: #FFFBF5;
+}
+
+.active-dishes {
+  margin-top: 14rpx;
+  font-size: 29rpx;
+  font-weight: 700;
+  color: #3F3228;
+}
+
+.active-meta {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #8A7A6B;
+}
+
+.active-copy {
+  margin-top: 12rpx;
+  padding: 12rpx 16rpx;
+  border-radius: 12rpx;
+  background: #FBF4E8;
+  font-size: 23rpx;
+  color: #6F6155;
+  line-height: 1.55;
+}
+
+.active-cta {
+  margin-top: 14rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #D94F2B;
+  text-align: right;
+}
+
+.empty-kitchen,
+.empty-praise {
+  text-align: center;
+  padding: 34rpx 24rpx;
+}
+
+.empty-emoji {
+  display: block;
+  font-size: 56rpx;
+  margin-bottom: 8rpx;
+}
+
+.empty-desc {
+  margin-top: 6rpx;
+}
+
+.menu-btn {
+  margin-top: 18rpx;
+}
+
+.praise-feed {
+  padding-top: 6rpx;
+  padding-bottom: 6rpx;
+}
+
+.praise-item {
+  padding: 18rpx 0;
+  border-bottom: 2rpx dashed #EADCC9;
+}
+
+.praise-item:last-child {
+  border-bottom: none;
+}
+
+.praise-score {
+  font-size: 24rpx;
+  font-weight: 800;
+  color: #D94F2B;
+}
+
+.praise-time {
+  font-size: 20rpx;
+  color: #A29384;
+}
+
+.praise-text {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 26rpx;
+  line-height: 1.65;
+  color: #4A3B2F;
+  white-space: pre-wrap;
+}
+
+.praise-dishes {
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #9A8877;
+}
+
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 16rpx;
+  padding-top: 22rpx;
+  padding-bottom: 22rpx;
+}
+
+.arrow {
+  font-size: 42rpx;
+  color: #C3B4A2;
+  line-height: 1;
+}

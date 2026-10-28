@@ -1,0 +1,204 @@
+.verdict-page {
+  padding-top: 30rpx;
+}
+
+.loading-card {
+  min-height: 200rpx;
+}
+
+.retry {
+  margin-top: 24rpx;
+}
+
+.verdict-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 40rpx 30rpx 34rpx;
+  border-radius: 32rpx;
+  border: 2rpx solid #EADCC9;
+  box-shadow: 0 10rpx 0 rgba(42, 33, 27, 0.06);
+  text-align: center;
+}
+
+.hero-pass {
+  background: linear-gradient(180deg, #FFF4DA 0%, #FFFBF2 100%);
+}
+
+.hero-fail {
+  background: linear-gradient(180deg, #FBE7E1 0%, #FFF9F5 100%);
+}
+
+.hero-emoji {
+  font-size: 64rpx;
+  line-height: 1;
+}
+
+.score-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8rpx;
+  margin-top: 10rpx;
+}
+
+.score-num {
+  font-size: 140rpx;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -4rpx;
+  color: #D94F2B;
+}
+
+.score-max {
+  font-size: 28rpx;
+  color: #8A7A6B;
+}
+
+.score-line {
+  margin-top: 8rpx;
+  font-size: 23rpx;
+  color: #8A7A6B;
+}
+
+.stamp-big {
+  margin-top: 22rpx;
+  padding: 10rpx 28rpx;
+  font-size: 30rpx;
+}
+
+.verdict-copy {
+  margin-top: 20rpx;
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #5E4C3D;
+}
+
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  font-size: 34rpx;
+  animation: sparkle 1.8s ease-in-out infinite;
+}
+
+.spark-1 {
+  left: 54rpx;
+  top: 44rpx;
+}
+
+.spark-2 {
+  right: 66rpx;
+  top: 66rpx;
+  animation-delay: 0.4s;
+}
+
+.spark-3 {
+  right: 110rpx;
+  bottom: 48rpx;
+  animation-delay: 0.9s;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(-8deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(6deg); }
+}
+
+.pay-card {
+  margin-top: 24rpx;
+  background: #FFF8E7;
+  border-color: #EBD3A1;
+}
+
+.pay-hint {
+  margin-top: 10rpx;
+  font-size: 25rpx;
+  line-height: 1.6;
+  color: #7A5C1B;
+}
+
+.pay-order {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #9A7E48;
+}
+
+.chef-note {
+  margin-top: 20rpx;
+}
+
+.breakdown-card {
+  margin-top: 22rpx;
+}
+
+.hard-fail-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-top: 14rpx;
+}
+
+.hard-fail {
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  background: #FBE9E4;
+  color: #B93B1B;
+  font-size: 21rpx;
+}
+
+.suggestion-card {
+  background: #FBF7EF;
+}
+
+.suggestion-list {
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.suggestion {
+  font-size: 25rpx;
+  line-height: 1.6;
+  color: #5E4C3D;
+}
+
+.quote-card {
+  margin-top: 22rpx;
+  background: #FFFCF6;
+}
+
+.quote-label {
+  font-size: 21rpx;
+  color: #9A8877;
+  letter-spacing: 1rpx;
+}
+
+.quote-text {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  line-height: 1.7;
+  color: #4A3B2F;
+}
+
+.quote-reason {
+  margin-top: 12rpx;
+  font-size: 23rpx;
+  color: #B93B1B;
+}
+
+.main-action {
+  margin-top: 32rpx;
+}
+
+.detail-action {
+  margin-top: 16rpx;
+}
+
+.custom-note {
+  margin-bottom: 20rpx;
+}

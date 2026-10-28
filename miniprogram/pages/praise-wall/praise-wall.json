@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "夸夸墙",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state"
+  }
+}

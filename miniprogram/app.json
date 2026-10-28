@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/kitchen/kitchen",
+    "pages/orders/orders",
+    "pages/praise-wall/praise-wall",
+    "pages/me/me",
+    "pages/setup/setup",
+    "pages/praise/praise",
+    "pages/verdict/verdict",
+    "pages/order-detail/order-detail",
+    "pages/menu-manage/menu-manage",
+    "pages/dish-edit/dish-edit"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FFF7EC",
+    "navigationBarTitleText": "夸夸食堂",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF7EC",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8A7A6B",
+    "selectedColor": "#D94F2B",
+    "backgroundColor": "#FFFDF8",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "食堂"
+      },
+      {
+        "pagePath": "pages/kitchen/kitchen",
+        "text": "厨房"
+      },
+      {
+        "pagePath": "pages/orders/orders",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/praise-wall/praise-wall",
+        "text": "夸夸"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2"
+}

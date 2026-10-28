@@ -1,0 +1,81 @@
+<view class="page verdict-page">
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在开分…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="verdict-hero {{passed ? 'hero-pass' : 'hero-fail'}}">
+      <view wx:if="{{passed}}" class="sparkles">
+        <text class="spark spark-1">✨</text>
+        <text class="spark spark-2">🌟</text>
+        <text class="spark spark-3">✨</text>
+      </view>
+      <view class="hero-emoji">{{grade.emoji}}</view>
+      <view class="score-row">
+        <text class="score-num">{{displayScore}}</text>
+        <text class="score-max">/ 100</text>
+      </view>
+      <view class="score-line">满意线 {{passScore}} · 第 {{round.round}} 轮 · 有效 {{effLen}} 字</view>
+      <view class="stamp stamp-big {{stampClass}}">{{grade.stamp}}</view>
+      <view class="verdict-copy">{{passed ? '大厨满意了，准你吃饭。' : '大厨还差点感觉，再来一轮。'}}</view>
+    </view>
+
+    <view wx:if="{{hasCustom}}" class="notice custom-note">
+      这单有自点菜：满意线按加严的 {{passScore}} 分算，最低 {{minLen}} 字。
+    </view>
+
+    <view wx:if="{{passed}}" class="card pay-card">
+      <view class="between">
+        <text class="h3">该交菜钱了</text>
+        <text class="money">{{totalText}}</text>
+      </view>
+      <view class="pay-hint">微信转账给厨师，回来点「我已转账」。</view>
+      <view class="pay-order">订单 {{orderNo}} · {{orderStatusLabel}}</view>
+    </view>
+
+    <view wx:if="{{chefDemand}}" class="notice notice-red chef-note">
+      厨师点名要听：{{chefDemand}}
+    </view>
+    <view wx:elif="{{chefReason}}" class="notice notice-red chef-note">
+      厨师批语：{{chefReason}}
+    </view>
+
+    <view class="card breakdown-card">
+      <view class="between">
+        <text class="h3">得分明细</text>
+        <text class="muted">{{round.score}} 分</text>
+      </view>
+      <score-bars breakdown="{{round.breakdown}}" />
+    </view>
+
+    <view wx:if="{{hardFailTexts.length}}" class="card">
+      <view class="h3">硬伤</view>
+      <view class="hard-fail-row">
+        <text wx:for="{{hardFailTexts}}" wx:key="*this" class="hard-fail">{{item}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{suggestions.length}}" class="card suggestion-card">
+      <view class="h3">下一轮可以这样夸</view>
+      <view class="suggestion-list">
+        <text wx:for="{{suggestions}}" wx:key="*this" class="suggestion">· {{item}}</text>
+      </view>
+    </view>
+
+    <view class="card quote-card">
+      <view class="quote-label">你这一轮写的是</view>
+      <text class="quote-text">{{round.text}}</text>
+      <view wx:if="{{round.reason && !chefReason}}" class="quote-reason">批语：{{round.reason}}</view>
+    </view>
+
+    <button class="btn btn-primary btn-block main-action" bindtap="onPrimary">
+      {{passed ? '去付菜钱' : '再夸一轮'}}
+    </button>
+    <button class="btn btn-ghost btn-block detail-action" bindtap="onDetail">先看看订单</button>
+  </block>
+</view>

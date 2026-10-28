@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "开分",
+  "usingComponents": {
+    "score-bars": "/components/score-bars/score-bars"
+  }
+}

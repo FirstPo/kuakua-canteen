@@ -1,0 +1,48 @@
+<view class="page orders-page">
+  <view class="orders-head">
+    <view class="grow">
+      <view class="h1">订单</view>
+      <view class="orders-sub">{{role == 'chef' ? '你掌勺' : '你点菜'}} · {{orders.length}} 单</view>
+    </view>
+  </view>
+
+  <view class="filter-row">
+    <text
+      wx:for="{{filters}}"
+      wx:key="key"
+      class="filter-chip {{item.key == filter ? 'filter-on' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onFilter"
+    >{{item.label}}</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在翻账本…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{orders.length}}" class="order-list">
+      <order-card
+        wx:for="{{orders}}"
+        wx:key="_id"
+        order="{{item}}"
+        role="{{role}}"
+        bind:tap="onOrderTap"
+      />
+    </view>
+
+    <empty-state
+      wx:else
+      emoji="🧾"
+      title="{{emptyText}}"
+      desc="{{role == 'chef' ? '灶上没单的时候，去菜单添两道新菜。' : '点两道菜，再认真夸一轮。'}}"
+      actionText="{{emptyActionText}}"
+      bind:action="onEmptyAction"
+    />
+  </block>
+</view>

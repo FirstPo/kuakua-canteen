@@ -1,0 +1,129 @@
+<view class="page kitchen-page">
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在系围裙…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:else>
+    <view class="kitchen-head">
+      <view class="grow">
+        <view class="greeting">{{greeting}}，{{user.nickname}}</view>
+        <view class="kitchen-sub">{{partner ? '食客：' + partner.nickname : '还差一位食客'}}</view>
+      </view>
+      <view class="chef-avatar">{{user.emoji}}</view>
+    </view>
+
+    <view class="card open-card {{kitchenOpen ? 'open-on' : 'open-off'}}">
+      <view class="between">
+        <view>
+          <view class="h3">{{kitchenOpen ? '今日营业中' : '今天歇业'}}</view>
+          <view class="open-hint">{{kitchenOpen ? '食客可以下新单。' : '进行中的订单继续，新单会被拦下。'}}</view>
+        </view>
+        <switch
+          checked="{{kitchenOpen}}"
+          disabled="{{toggling}}"
+          color="#D94F2B"
+          bindchange="onToggleOpen"
+        />
+      </view>
+      <view class="note-edit">
+        <input
+          class="input note-input"
+          maxlength="60"
+          value="{{kitchenNote}}"
+          placeholder="写条公告，比如：今天只做面"
+          bindinput="onNoteInput"
+        />
+        <button
+          class="btn btn-ghost btn-sm note-save"
+          loading="{{savingNote}}"
+          disabled="{{savingNote}}"
+          bindtap="onSaveNote"
+        >保存</button>
+      </view>
+    </view>
+
+    <view class="stat-grid">
+      <view class="stat-cell">
+        <text class="stat-value">{{stats.todayServed}}</text>
+        <text class="stat-label">今日出餐</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-value">{{totalText}}</text>
+        <text class="stat-label">累计收款</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-value">{{maxScoreText}}</text>
+        <text class="stat-label">最高分</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-value">{{avgRoundsText}}</text>
+        <text class="stat-label">平均夸几轮</text>
+      </view>
+    </view>
+
+    <view class="section-head">
+      <text class="h2">灶上的单</text>
+      <text class="link" bindtap="onGoOrders">全部订单</text>
+    </view>
+
+    <view wx:if="{{activeOrder}}" class="card active-card" bindtap="onActiveTap">
+      <view class="between">
+        <text class="status-pill status-{{activeOrder.status}}">{{activeOrder.statusLabel}}</text>
+        <text class="money">{{activeOrder.totalText}}</text>
+      </view>
+      <view class="active-dishes">{{activeOrder.dishText}}</view>
+      <view class="active-meta">{{activeOrder.latestScore}} 分 · {{activeOrder.roundCount}} 轮 · {{activeOrder.timeText}}</view>
+      <view class="active-copy">{{activeOrder.copy}}</view>
+      <view class="active-cta">{{activeOrder.action}} →</view>
+    </view>
+
+    <view wx:else class="card empty-kitchen">
+      <text class="empty-emoji">🍳</text>
+      <view class="h3">灶上没单</view>
+      <view class="muted empty-desc">等她点菜，或者去把菜单添两道。</view>
+      <button class="btn btn-ghost btn-sm menu-btn" catchtap="onGoMenu">管理菜单</button>
+    </view>
+
+    <view class="section-head">
+      <text class="h2">最新夸奖</text>
+      <text class="link" bindtap="onGoPraiseWall">夸夸墙</text>
+    </view>
+
+    <view wx:if="{{praises.length}}" class="card praise-feed">
+      <view class="praise-item" wx:for="{{praises}}" wx:key="key">
+        <view class="between">
+          <text class="praise-score">{{item.score}} 分</text>
+          <text class="praise-time">{{item.timeText}}</text>
+        </view>
+        <text class="praise-text">{{item.text}}</text>
+        <view wx:if="{{item.dishesText}}" class="praise-dishes">{{item.dishesText}}</view>
+      </view>
+    </view>
+
+    <view wx:else class="card empty-praise">
+      <text class="empty-emoji">🫥</text>
+      <view class="muted">还没有过线的夸奖。是不是满意线定高了？</view>
+    </view>
+
+    <view class="card link-row" bindtap="onGoMenu">
+      <view class="grow">
+        <view class="h3">菜单</view>
+        <view class="muted">{{dishCount}} 道菜 · 改价、上架、加新菜</view>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+
+    <view class="card link-row" bindtap="onGoMe">
+      <view class="grow">
+        <view class="h3">夸夸标准</view>
+        <view class="muted">过线 {{settings.passScore}} 分 · 最少 {{settings.minLen}} 字</view>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+  </block>
+</view>

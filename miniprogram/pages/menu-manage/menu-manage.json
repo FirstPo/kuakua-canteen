@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "菜单管理",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state"
+  }
+}

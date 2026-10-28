@@ -1,0 +1,108 @@
+<view class="page edit-page">
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在找这道菜…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRetry" wx:if="{{id}}">重新加载</button>
+    <button class="btn btn-ghost btn-block retry" bindtap="onBack">返回菜单</button>
+  </view>
+
+  <block wx:else>
+    <view class="preview-card">
+      <text class="preview-emoji">{{emoji}}</text>
+      <view class="grow">
+        <view class="preview-name">{{name || '新菜'}}</view>
+        <view class="preview-meta">{{category}} · {{priceInput ? '¥' + priceInput : '还没定价'}}</view>
+        <view class="preview-desc">{{desc || '写句介绍，让她知道这道菜好在哪。'}}</view>
+      </view>
+      <text wx:if="{{!available}}" class="off-tag">售罄</text>
+    </view>
+
+    <view class="card form-card">
+      <view class="field">
+        <text class="field-label">菜名</text>
+        <input
+          class="input"
+          maxlength="{{maxName}}"
+          value="{{name}}"
+          placeholder="比如：油泼面"
+          data-field="name"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="field">
+        <view class="between">
+          <text class="field-label">介绍</text>
+          <text class="field-count">{{desc.length}} / {{maxDesc}}</text>
+        </view>
+        <textarea
+          class="input field-textarea"
+          maxlength="{{maxDesc}}"
+          value="{{desc}}"
+          placeholder="比如：宽面现擀，辣子现泼"
+          data-field="desc"
+          bindinput="onInput"
+          auto-height
+        />
+      </view>
+
+      <view class="field">
+        <text class="field-label">价格（元）</text>
+        <input
+          class="input"
+          type="digit"
+          maxlength="8"
+          value="{{priceInput}}"
+          placeholder="比如：12 或 12.5"
+          data-field="priceInput"
+          bindinput="onInput"
+        />
+        <view class="field-hint">最多 999 元，可以写 0。</view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">分类</text>
+        <view class="chip-row">
+          <text
+            wx:for="{{categories}}"
+            wx:key="*this"
+            class="cat-chip {{item == category ? 'cat-on' : ''}}"
+            data-category="{{item}}"
+            bindtap="onCategory"
+          >{{item}}</text>
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">图标</text>
+        <view class="emoji-grid">
+          <text
+            wx:for="{{emojis}}"
+            wx:key="*this"
+            class="emoji-cell {{item == emoji ? 'emoji-on' : ''}}"
+            data-emoji="{{item}}"
+            bindtap="onEmoji"
+          >{{item}}</text>
+        </view>
+      </view>
+
+      <view class="field available-field">
+        <view class="grow">
+          <view class="field-label">在售</view>
+          <view class="field-hint">关掉后她看不到这道菜，但旧订单不受影响。</view>
+        </view>
+        <switch checked="{{available}}" color="#6E8B6B" bindchange="onAvailable" />
+      </view>
+    </view>
+
+    <button
+      class="btn btn-primary btn-block save-btn"
+      loading="{{saving}}"
+      disabled="{{saving}}"
+      bindtap="onSave"
+    >{{isEdit ? '保存修改' : '上新这道菜'}}</button>
+  </block>
+</view>

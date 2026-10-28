@@ -1,0 +1,138 @@
+.order-card {
+  margin-top: 20rpx;
+  padding: 26rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #EADCC9;
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 0 rgba(42, 33, 27, 0.05);
+}
+
+.order-card:active {
+  transform: scale(0.992);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.no {
+  font-size: 22rpx;
+  color: #8A7A6B;
+  letter-spacing: 1rpx;
+}
+
+.dishes {
+  margin-top: 6rpx;
+  font-size: 29rpx;
+  font-weight: 700;
+  color: #2A211B;
+  line-height: 1.45;
+}
+
+.status-pill {
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 21rpx;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-rejected {
+  background: #FBE9E4;
+  color: #B93B1B;
+}
+
+.status-approved {
+  background: #FDF1D8;
+  color: #9A6A12;
+}
+
+.status-payment_claimed {
+  background: #EAF0E7;
+  color: #4F6B4C;
+}
+
+.status-paid {
+  background: #E7F2EA;
+  color: #3E6B4A;
+}
+
+.status-cooking {
+  background: #FDE9DA;
+  color: #B4551F;
+}
+
+.status-served {
+  background: #EDE8F7;
+  color: #5B4C8A;
+}
+
+.status-cancelled {
+  background: #F0ECE7;
+  color: #8A7A6B;
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: 18rpx;
+  margin-top: 18rpx;
+}
+
+.price {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #D94F2B;
+}
+
+.time {
+  font-size: 22rpx;
+  color: #8A7A6B;
+}
+
+.round {
+  font-size: 21rpx;
+  color: #9C6B4A;
+  background: #F7EBDD;
+  padding: 2rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.score {
+  margin-left: auto;
+  font-size: 23rpx;
+  font-weight: 700;
+  color: #6E8B6B;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 2rpx dashed #EADCC9;
+}
+
+.copy {
+  flex: 1;
+  min-width: 0;
+  font-size: 23rpx;
+  color: #8A7A6B;
+  line-height: 1.5;
+}
+
+.action {
+  flex-shrink: 0;
+  font-size: 23rpx;
+  font-weight: 700;
+  color: #D94F2B;
+}

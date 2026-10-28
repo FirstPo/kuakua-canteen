@@ -1,0 +1,419 @@
+.home-page {
+  padding-top: 30rpx;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+}
+
+.top-sub {
+  margin-top: 8rpx;
+  color: #8A7A6B;
+  font-size: 24rpx;
+}
+
+.chef-chip {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 10rpx 16rpx 10rpx 10rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #EADCC9;
+  border-radius: 24rpx;
+  box-shadow: 0 6rpx 0 rgba(42, 33, 27, 0.04);
+}
+
+.chef-chip-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.chef-chip-name {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #2A211B;
+  max-width: 120rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chef-chip-role {
+  font-size: 19rpx;
+  color: #8A7A6B;
+}
+
+.loading-card {
+  margin-top: 28rpx;
+  min-height: 180rpx;
+}
+
+.retry {
+  margin-top: 24rpx;
+}
+
+.kitchen-line {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 24rpx;
+}
+
+.kitchen-note {
+  flex: 1;
+  min-width: 0;
+  font-size: 22rpx;
+  color: #8A7A6B;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.active-card {
+  margin-top: 20rpx;
+  padding: 24rpx 26rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #F2C1B4;
+  border-left: 8rpx solid #D94F2B;
+  border-radius: 26rpx;
+  box-shadow: 0 8rpx 0 rgba(217, 79, 43, 0.08);
+}
+
+.active-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+
+.active-label {
+  font-size: 21rpx;
+  color: #D94F2B;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+.active-dishes {
+  margin-top: 4rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2A211B;
+}
+
+.active-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 14rpx;
+  margin-top: 14rpx;
+}
+
+.active-score {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #D94F2B;
+}
+
+.active-round {
+  font-size: 21rpx;
+  color: #9C6B4A;
+  background: #F7EBDD;
+  padding: 2rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.active-money {
+  font-size: 23rpx;
+  color: #8A7A6B;
+}
+
+.active-action {
+  margin-left: auto;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #D94F2B;
+}
+
+.active-copy {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 2rpx dashed #EADCC9;
+  font-size: 23rpx;
+  color: #8A7A6B;
+  line-height: 1.55;
+}
+
+.closed-note {
+  margin-top: 20rpx;
+}
+
+.menu-list {
+  margin-top: 20rpx;
+}
+
+.dish-card {
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 18rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #EADCC9;
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 0 rgba(42, 33, 27, 0.05);
+}
+
+.dish-card.sold-out {
+  opacity: 0.58;
+}
+
+.dish-emoji {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 30rpx;
+  background: #FBF3E7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  flex-shrink: 0;
+}
+
+.dish-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dish-head {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.dish-name {
+  font-size: 31rpx;
+  font-weight: 800;
+  color: #2A211B;
+}
+
+.soldout-tag {
+  font-size: 20rpx;
+  color: #B93B1B;
+  background: #FBE9E4;
+  padding: 3rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.dish-desc {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 23rpx;
+  color: #8A7A6B;
+  line-height: 1.5;
+}
+
+.dish-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+
+.dish-price {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #D94F2B;
+}
+
+.cart-bar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: calc(126rpx + env(safe-area-inset-bottom));
+  z-index: 700;
+  height: 112rpx;
+  padding: 12rpx 14rpx 12rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #2A211B;
+  border-radius: 56rpx;
+  box-shadow: 0 12rpx 28rpx rgba(42, 33, 27, 0.25);
+}
+
+.cart-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  min-width: 0;
+}
+
+.cart-badge {
+  width: 54rpx;
+  height: 54rpx;
+  border-radius: 50%;
+  background: #D94F2B;
+  color: #FFFDF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.cart-text {
+  display: flex;
+  align-items: baseline;
+  gap: 10rpx;
+}
+
+.cart-label {
+  font-size: 21rpx;
+  color: #C9B9A7;
+}
+
+.cart-total {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #FFFDF8;
+}
+
+.cart-btn {
+  height: 84rpx;
+  padding: 0 28rpx;
+  border-radius: 42rpx;
+  background: #D94F2B;
+  color: #FFFDF8;
+  font-size: 27rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.cart-btn[disabled] {
+  background: #6F6155;
+  color: #D8C9B8;
+}
+
+.cart-btn.active-btn {
+  background: #E7A83D;
+  color: #4A2E08;
+}
+
+.custom-cta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 22rpx;
+  padding: 22rpx 24rpx;
+  background: #FFF4DA;
+  border: 2rpx dashed #E7A83D;
+  border-radius: 26rpx;
+}
+
+.custom-cta-emoji {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 22rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #F0D9A8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.custom-cta-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #4A2E08;
+}
+
+.custom-cta-sub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #7B5714;
+}
+
+.custom-cta-plus {
+  font-size: 42rpx;
+  font-weight: 800;
+  color: #D94F2B;
+  flex-shrink: 0;
+}
+
+.custom-list {
+  margin-top: 26rpx;
+}
+
+.custom-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-bottom: 14rpx;
+}
+
+.custom-head-note {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #B93B1B;
+}
+
+.custom-card {
+  background: #FFF9EC;
+  border-color: #E7A83D;
+}
+
+.custom-tag {
+  background: #FDF1D8;
+  color: #8A5A00;
+}
+
+.custom-sheet {
+  max-height: 84vh;
+  padding-bottom: calc(80rpx + env(safe-area-inset-bottom));
+}
+
+.custom-field {
+  margin-top: 22rpx;
+}
+
+.custom-label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 25rpx;
+  color: #8A7A6B;
+}
+
+.custom-hint {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8A7A6B;
+}
+
+.custom-emoji-grid {
+  max-height: 220rpx;
+  overflow-y: auto;
+  margin-top: 8rpx;
+  padding-bottom: 4rpx;
+}
+
+.custom-emoji-grid .emoji-cell {
+  width: 72rpx;
+  height: 72rpx;
+  font-size: 36rpx;
+}
+
+.custom-submit {
+  margin-top: 30rpx;
+}
+
+.custom-cancel {
+  margin-top: 16rpx;
+}

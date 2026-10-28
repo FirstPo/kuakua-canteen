@@ -1,0 +1,135 @@
+<view class="page setup-page">
+  <view class="hero">
+    <view class="hero-mark">🍳</view>
+    <view class="h1">夸夸食堂</view>
+    <view class="hero-sub">先夸，再吃。只开一张桌。</view>
+    <view class="hero-receipt">
+      <text class="hero-line">今日供应：家常菜 + 夸奖</text>
+      <text class="hero-line">规矩：夸到满意，才准付款</text>
+      <text class="hero-line">本店只接待两位贵客</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card center loading-card">
+    <text class="muted">正在擦桌子…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="card">
+    <view class="notice notice-red">{{error}}</view>
+    <button class="btn btn-primary btn-block retry" bindtap="onRefresh">再试一次</button>
+  </view>
+
+  <view wx:elif="{{closed}}" class="card closed-card">
+    <view class="stamp closed-stamp">客满</view>
+    <view class="h2">本食堂只接待两位贵客</view>
+    <view class="muted closed-text">厨师和食客都已经有人了。如果你是其中之一，请回到自己的微信打开小程序。</view>
+    <button class="btn btn-ghost btn-block retry" bindtap="onRefresh">刷新看看</button>
+  </view>
+
+  <block wx:else>
+    <view class="section">
+      <view class="section-title">
+        <text>选个身份</text>
+        <text class="hint">选完就改不了，慎重</text>
+      </view>
+      <view class="role-grid">
+        <view
+          class="role-card {{chefSelected ? 'active' : ''}} {{chefTaken ? 'taken' : ''}}"
+          data-role="chef"
+          bindtap="onSelectRole"
+        >
+          <text class="role-emoji">👨‍🍳</text>
+          <text class="role-name">我是厨师</text>
+          <text class="role-desc">我做饭，我定满意线，我有最终否决权。</text>
+          <text wx:if="{{chefTaken}}" class="role-tag">已有人</text>
+          <text wx:elif="{{chefSelected}}" class="role-tag ok">已选中</text>
+        </view>
+
+        <view
+          class="role-card {{dinerSelected ? 'active' : ''}} {{dinerTaken ? 'taken' : ''}}"
+          data-role="diner"
+          bindtap="onSelectRole"
+        >
+          <text class="role-emoji">🍚</text>
+          <text class="role-name">我是食客</text>
+          <text class="role-desc">我点菜，我夸人，我转账。</text>
+          <text wx:if="{{dinerTaken}}" class="role-tag">已有人</text>
+          <text wx:elif="{{dinerSelected}}" class="role-tag ok">已选中</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{selectedRole}}" class="card form-card">
+      <view class="h3">{{selectedRole == 'chef' ? '厨师档案' : '食客档案'}}</view>
+
+      <text class="label">怎么称呼</text>
+      <input
+        class="input"
+        maxlength="12"
+        value="{{nickname}}"
+        placeholder="{{selectedRole == 'chef' ? '大厨' : '小馋猫'}}"
+        bindinput="onNickname"
+      />
+
+      <text class="label">挑个头像</text>
+      <view class="emoji-grid">
+        <view
+          wx:for="{{emojiChoices}}"
+          wx:key="*this"
+          class="emoji-cell {{emoji == item ? 'active' : ''}}"
+          data-emoji="{{item}}"
+          bindtap="onEmoji"
+        >{{item}}</view>
+      </view>
+
+      <block wx:if="{{selectedRole == 'chef'}}">
+        <view class="slider-block">
+          <view class="between">
+            <text class="slider-label">满意线</text>
+            <text class="slider-value">{{passScore}} 分</text>
+          </view>
+          <slider
+            min="60"
+            max="100"
+            step="1"
+            value="{{passScore}}"
+            activeColor="#D94F2B"
+            backgroundColor="#EADCC9"
+            block-color="#FFFDF8"
+            block-size="24"
+            bindchange="onPassScore"
+          />
+          <text class="slider-hint">低于这条线，她得重夸。默认 80，够她挠头一会儿。</text>
+        </view>
+
+        <view class="slider-block">
+          <view class="between">
+            <text class="slider-label">最低有效字数</text>
+            <text class="slider-value">{{minLen}} 字</text>
+          </view>
+          <slider
+            min="10"
+            max="50"
+            step="1"
+            value="{{minLen}}"
+            activeColor="#D94F2B"
+            backgroundColor="#EADCC9"
+            block-color="#FFFDF8"
+            block-size="24"
+            bindchange="onMinLen"
+          />
+          <text class="slider-hint">标点、空格、表情不算数。默认 20 个有效字。</text>
+        </view>
+      </block>
+
+      <button
+        class="btn btn-primary btn-block submit"
+        loading="{{submitting}}"
+        disabled="{{submitting}}"
+        bindtap="onSubmit"
+      >{{selectedRole == 'chef' ? '系上围裙，开张' : '坐下，等饭吃'}}</button>
+    </view>
+
+    <view class="footer-note">两个人，一张桌，一顿一顿慢慢吃。</view>
+  </block>
+</view>
