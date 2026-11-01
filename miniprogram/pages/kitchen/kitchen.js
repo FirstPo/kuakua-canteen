@@ -45,6 +45,7 @@ Page({
     greeting: '你好',
     user: null,
     partner: null,
+    dinerCount: 0,
     settings: null,
     kitchenOpen: true,
     kitchenNote: '',
@@ -53,6 +54,7 @@ Page({
     maxScoreText: '—',
     avgRoundsText: '—',
     activeOrder: null,
+    activeOrders: [],
     praises: [],
     dishCount: 0,
     savingNote: false,
@@ -100,12 +102,16 @@ Page({
         timeText: fmt.relativeTime(item.createdAt)
       }));
 
+      const activeList = (boot.activeOrders && boot.activeOrders.length
+        ? boot.activeOrders
+        : (boot.activeOrder ? [boot.activeOrder] : [])).map(order => activeView(order, 'chef'));
       this.setData({
         loading: false,
         error: '',
         greeting: greetingFor(new Date().getHours()),
         user: boot.user,
         partner: boot.partner,
+        dinerCount: boot.dinerCount || 0,
         settings: boot.settings,
         kitchenOpen: boot.settings.kitchenOpen,
         kitchenNote: boot.settings.kitchenNote,
@@ -113,7 +119,8 @@ Page({
         totalText: fmt.formatMoney(stats.totalCents),
         maxScoreText: stats.maxScore ? String(stats.maxScore) : '—',
         avgRoundsText: stats.avgRounds ? String(stats.avgRounds) : '—',
-        activeOrder: activeView(boot.activeOrder, 'chef'),
+        activeOrder: activeList[0] || null,
+        activeOrders: activeList,
         praises: praises,
         dishCount: dishes.length
       });
@@ -167,10 +174,13 @@ Page({
     }
   },
 
-  onActiveTap() {
-    if (!this.data.activeOrder) return;
+  onActiveTap(event) {
+    const id = event && event.currentTarget && event.currentTarget.dataset
+      ? event.currentTarget.dataset.id
+      : '';
+    if (!id) return;
     wx.navigateTo({
-      url: '/pages/order-detail/order-detail?orderId=' + this.data.activeOrder._id
+      url: '/pages/order-detail/order-detail?orderId=' + id
     });
   },
 

@@ -12,7 +12,7 @@
     <view class="kitchen-head">
       <view class="grow">
         <view class="greeting">{{greeting}}，{{user.nickname}}</view>
-        <view class="kitchen-sub">{{partner ? '食客：' + partner.nickname : '还差一位食客'}}</view>
+        <view class="kitchen-sub">{{dinerCount ? '食客 ' + dinerCount + ' 位' : '还差一位食客'}}</view>
       </view>
       <view class="chef-avatar">{{user.emoji}}</view>
     </view>
@@ -67,19 +67,27 @@
     </view>
 
     <view class="section-head">
-      <text class="h2">灶上的单</text>
+      <text class="h2">灶上的单{{activeOrders.length ? ' · ' + activeOrders.length : ''}}</text>
       <text class="link" bindtap="onGoOrders">全部订单</text>
     </view>
 
-    <view wx:if="{{activeOrder}}" class="card active-card" bindtap="onActiveTap">
-      <view class="between">
-        <text class="status-pill status-{{activeOrder.status}}">{{activeOrder.statusLabel}}</text>
-        <text class="money">{{activeOrder.totalText}}</text>
+    <view wx:if="{{activeOrders.length}}" class="active-list">
+      <view
+        wx:for="{{activeOrders}}"
+        wx:key="_id"
+        class="card active-card"
+        data-id="{{item._id}}"
+        bindtap="onActiveTap"
+      >
+        <view class="between">
+          <text class="status-pill status-{{item.status}}">{{item.statusLabel}}</text>
+          <text class="money">{{item.totalText}}</text>
+        </view>
+        <view class="active-dishes">{{item.dishText}}</view>
+        <view class="active-meta">{{item.latestScore}} 分 · {{item.roundCount}} 轮 · {{item.timeText}}</view>
+        <view class="active-copy">{{item.copy}}</view>
+        <view class="active-cta">{{item.action}} →</view>
       </view>
-      <view class="active-dishes">{{activeOrder.dishText}}</view>
-      <view class="active-meta">{{activeOrder.latestScore}} 分 · {{activeOrder.roundCount}} 轮 · {{activeOrder.timeText}}</view>
-      <view class="active-copy">{{activeOrder.copy}}</view>
-      <view class="active-cta">{{activeOrder.action}} →</view>
     </view>
 
     <view wx:else class="card empty-kitchen">

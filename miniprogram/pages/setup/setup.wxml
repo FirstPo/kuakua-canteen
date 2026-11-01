@@ -6,7 +6,7 @@
     <view class="hero-receipt">
       <text class="hero-line">今日供应：家常菜 + 夸奖</text>
       <text class="hero-line">规矩：夸到满意，才准付款</text>
-      <text class="hero-line">本店只接待两位贵客</text>
+      <text class="hero-line">厨师一位，食客不限</text>
     </view>
   </view>
 
@@ -17,13 +17,6 @@
   <view wx:elif="{{error}}" class="card">
     <view class="notice notice-red">{{error}}</view>
     <button class="btn btn-primary btn-block retry" bindtap="onRefresh">再试一次</button>
-  </view>
-
-  <view wx:elif="{{closed}}" class="card closed-card">
-    <view class="stamp closed-stamp">客满</view>
-    <view class="h2">本食堂只接待两位贵客</view>
-    <view class="muted closed-text">厨师和食客都已经有人了。如果你是其中之一，请回到自己的微信打开小程序。</view>
-    <button class="btn btn-ghost btn-block retry" bindtap="onRefresh">刷新看看</button>
   </view>
 
   <block wx:else>
@@ -130,6 +123,6 @@
       >{{selectedRole == 'chef' ? '系上围裙，开张' : '坐下，等饭吃'}}</button>
     </view>
 
-    <view class="footer-note">两个人，一张桌，一顿一顿慢慢吃。</view>
+    <view class="footer-note">一张桌，谁来都能点，一顿一顿慢慢吃。</view>
   </block>
 </view>

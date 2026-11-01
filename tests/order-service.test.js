@@ -108,7 +108,7 @@ async function rejectsWith(promise, code) {
   });
 }
 
-test('bootstrap：空库给两个身份，第三个人被挡在门外', async () => {
+test('bootstrap：厨师只有一个位置，食客不限人数', async () => {
   const h = createHarness();
   const first = await h.service.dispatch('bootstrap', h.chefCtx, {});
   assert.equal(first.access, 'setup');
@@ -145,11 +145,27 @@ test('bootstrap：空库给两个身份，第三个人被挡在门外', async ()
 
   const thirdCtx = { openid: 'openid_third' };
   const third = await h.service.dispatch('bootstrap', thirdCtx, {});
-  assert.equal(third.access, 'closed');
-  await rejectsWith(
-    h.service.dispatch('bindRole', thirdCtx, { role: 'diner', nickname: '路人' }),
-    CODES.CLOSED
-  );
+  assert.equal(third.access, 'setup');
+  assert.deepEqual(third.availableRoles, ['diner']);
+  assert.equal(third.dinerCount, 1);
+
+  const thirdBind = await h.service.dispatch('bindRole', thirdCtx, {
+    role: 'diner',
+    nickname: '朋友'
+  });
+  assert.equal(thirdBind.access, 'ready');
+  assert.equal(thirdBind.role, 'diner');
+  assert.equal(thirdBind.partner.role, 'chef');
+
+  const fourth = await h.service.dispatch('bindRole', { openid: 'openid_fourth' }, {
+    role: 'diner',
+    nickname: '再来一位'
+  });
+  assert.equal(fourth.role, 'diner');
+  assert.equal((await h.repo.listUsers()).length, 4);
+
+  const chefBoot = await h.service.dispatch('bootstrap', h.chefCtx, {});
+  assert.equal(chefBoot.dinerCount, 3);
 
   const again = await h.service.dispatch('bindRole', h.chefCtx, {
     role: 'chef',
@@ -168,6 +184,44 @@ test('同一个身份只能被抢一次', async () => {
   );
   assert.equal((await h.repo.listUsers()).length, 1);
   assert.equal(await h.repo.claimRoleSlot('chef', 'openid_other'), false);
+});
+
+test('多位食客可以各自开一单，厨师能看到全部进行中的单', async () => {
+  const h = createHarness();
+  await h.bindBoth();
+  const friendCtx = { openid: 'openid_friend' };
+  await h.service.dispatch('bindRole', friendCtx, { role: 'diner', nickname: '朋友' });
+
+  const menu = await h.service.dispatch('getMenu', h.dinerCtx);
+  const dish = menu.dishes[0];
+  const first = await h.service.dispatch('createOrder', h.dinerCtx, {
+    items: [{ dishId: dish._id, qty: 1 }],
+    praise: '你炒的菜真香，火候刚刚好。',
+    clientToken: 'multi-1'
+  });
+  const second = await h.service.dispatch('createOrder', friendCtx, {
+    items: [{ dishId: dish._id, qty: 1 }],
+    praise: '这一盘我惦记好久了，谢谢大厨。',
+    clientToken: 'multi-2'
+  });
+  assert.notEqual(first.order._id, second.order._id);
+
+  const chefBoot = await h.service.dispatch('bootstrap', h.chefCtx, {});
+  assert.equal(chefBoot.activeOrders.length, 2);
+  assert.deepEqual(
+    chefBoot.activeOrders.map(order => order._id).sort(),
+    [first.order._id, second.order._id].sort()
+  );
+
+  // 同一位食客同一时间还是只能有一单在进行中。
+  await rejectsWith(
+    h.service.dispatch('createOrder', h.dinerCtx, {
+      items: [{ dishId: dish._id, qty: 1 }],
+      praise: '再来一单。',
+      clientToken: 'multi-3'
+    }),
+    CODES.ACTIVE_ORDER
+  );
 });
 
 test('菜单：厨师增改删，食客无权，价格和分类要合法', async () => {
@@ -842,7 +896,7 @@ test('资料修改只作用到自己，夸夸墙归档高光和翻车', async ()
 
   await rejectsWith(
     h.service.dispatch('updateProfile', { openid: 'nobody' }, { nickname: 'x' }),
-    CODES.CLOSED
+    CODES.NOT_BOUND
   );
 
   const order = (await h.service.dispatch('createOrder', h.dinerCtx, await h.orderPayload())).order;

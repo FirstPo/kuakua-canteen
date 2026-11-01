@@ -13,7 +13,7 @@
       <view class="profile-avatar">{{user.emoji}}</view>
       <view class="grow">
         <view class="profile-name">{{user.nickname}}</view>
-        <view class="profile-role">{{roleLabel}}<text wx:if="{{partner}}"> · 和 {{partner.nickname}} 的两人食堂</text></view>
+        <view class="profile-role">{{roleLabel}}<text wx:if="{{isChef && dinerCount}}"> · {{dinerCount}} 位食客</text><text wx:elif="{{partner}}"> · 和 {{partner.nickname}} 的食堂</text></view>
         <view class="profile-joined">{{joinedText}} 入伙</view>
       </view>
       <button class="btn btn-ghost btn-sm edit-btn" bindtap="onOpenProfile">编辑</button>
@@ -120,7 +120,7 @@
         <text class="h3">演示模式</text>
         <text class="tag">仅本机</text>
       </view>
-      <view class="mock-note">数据只存在这台手机的微信里，不是双人同步。真要两个人用，按 README 接微信云开发。</view>
+      <view class="mock-note">数据只存在这台手机的微信里，不是双人同步。真要两台手机同步，按 README 接微信云开发。</view>
 
       <view class="mock-row">
         <view class="grow">
@@ -155,7 +155,7 @@
       <view class="about-title">夸夸食堂 · v{{version}}</view>
       <view class="about-line">{{isMock ? '演示模式 · 数据在本机' : '云端模式 · 数据在微信云开发'}}</view>
       <view wx:if="{{!isMock && cloudEnv}}" class="about-line">环境：{{cloudEnv}}</view>
-      <view class="about-line">只给两个人用，不公开发布。</view>
+      <view class="about-line">只给自己家开，不公开发布。</view>
     </view>
 
     <view class="me-foot">先夸，再吃。</view>

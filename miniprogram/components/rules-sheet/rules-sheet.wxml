@@ -35,16 +35,16 @@
     <view class="rule">
       <text class="rule-no">04</text>
       <view class="rule-body">
-        <text class="rule-title">一次只做一单</text>
-        <text class="rule-text">从重夸到出锅，同一时间只允许一张进行中的订单。上一单结束，才能点下一单。</text>
+        <text class="rule-title">一人一次一单</text>
+        <text class="rule-text">每位食客同一时间只允许一张进行中的订单。上一单结束，才能点下一单；不同食客可以各自开单。</text>
       </view>
     </view>
 
     <view class="rule">
       <text class="rule-no">05</text>
       <view class="rule-body">
-        <text class="rule-title">本店只接待两位</text>
-        <text class="rule-text">一个厨师，一个食客。第三个人进来只会看到「客满」。角色在开张时选定，App 内不提供重置。</text>
+        <text class="rule-title">一个厨师，食客不限</text>
+        <text class="rule-text">厨师只有一位，食客来多少都能坐下。角色在开张时选定，App 内不提供重置。</text>
       </view>
     </view>
 

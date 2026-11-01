@@ -41,8 +41,8 @@ test('mock 后端：绑定、自动补对象、点菜夸奖、付款、开火、
   });
   assert.equal(chef.access, 'ready');
   assert.equal(chef.role, 'chef');
-  assert.ok(chef.partner);
-  assert.equal(chef.partner.role, 'diner');
+  assert.equal(chef.partner, null);
+  assert.equal(chef.dinerCount, 1);
   assert.equal(chef.settings.passScore, 80);
 
   const menu = await backend.call('getMenu', {});

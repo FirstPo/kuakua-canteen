@@ -35,10 +35,10 @@ async function bootstrap() {
 
 async function ensurePartner(role) {
   const users = await repo.listUsers();
-  if (users.length >= 2) return;
   const other = otherRole(role);
   const openid = roleId(other);
   if (users.some(user => user._id === openid)) return;
+  if (users.some(user => user.role === other)) return;
   try {
     await service.dispatch('bindRole', ctx(openid), {
       role: other,

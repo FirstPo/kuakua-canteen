@@ -158,10 +158,20 @@ function createService(options) {
 
   async function getMembers() {
     const users = await repo.listUsers();
+    const chef = typeof repo.getFirstUserByRole === 'function'
+      ? await repo.getFirstUserByRole('chef')
+      : (users.find(u => u.role === 'chef') || null);
+    const diner = typeof repo.getFirstUserByRole === 'function'
+      ? await repo.getFirstUserByRole('diner')
+      : (users.find(u => u.role === 'diner') || null);
+    const dinerCount = typeof repo.countUsersByRole === 'function'
+      ? await repo.countUsersByRole('diner')
+      : users.filter(u => u.role === 'diner').length;
     return {
       users: users,
-      chef: users.find(u => u.role === 'chef') || null,
-      diner: users.find(u => u.role === 'diner') || null
+      chef: chef,
+      diner: diner,
+      dinerCount: dinerCount
     };
   }
 
@@ -170,13 +180,7 @@ function createService(options) {
       fail(CODES.NOT_BOUND, '还没有选择身份');
     }
     const me = await repo.getUser(ctx.openid);
-    if (!me) {
-      const users = await repo.listUsers();
-      if (users.length >= 2) {
-        fail(CODES.CLOSED, '本食堂只接待两位贵客');
-      }
-      fail(CODES.NOT_BOUND, '还没有选择身份');
-    }
+    if (!me) fail(CODES.NOT_BOUND, '还没有选择身份');
     return me;
   }
 
@@ -350,21 +354,26 @@ function createService(options) {
       partner: null,
       chef: members.chef,
       diner: members.diner,
+      dinerCount: members.dinerCount,
       settings: publicSettings(settings),
-      activeOrder: null
+      activeOrder: null,
+      activeOrders: []
     };
     if (!me) {
-      if (members.chef && members.diner) {
-        base.access = 'closed';
-        return base;
-      }
+      // 厨师只有一个位置；食客不限，来多少都能坐下。
       base.availableRoles = [];
       if (!members.chef) base.availableRoles.push('chef');
-      if (!members.diner) base.availableRoles.push('diner');
+      base.availableRoles.push('diner');
       return base;
     }
-    const partner = me.role === 'chef' ? members.diner : members.chef;
-    const active = await repo.findActiveOrder(me.role === 'diner' ? me._id : null);
+    const partner = me.role === 'chef' ? null : members.chef;
+    let activeOrders = [];
+    if (me.role === 'chef' && typeof repo.listActiveOrders === 'function') {
+      activeOrders = await repo.listActiveOrders();
+    }
+    const active = me.role === 'chef'
+      ? (activeOrders[0] || null)
+      : await repo.findActiveOrder(me._id);
     return Object.assign(base, {
       access: 'ready',
       role: me.role,
@@ -372,7 +381,9 @@ function createService(options) {
       partner: partner,
       chef: members.chef,
       diner: members.diner,
-      activeOrder: active ? summarize(active) : null
+      dinerCount: members.dinerCount,
+      activeOrder: active ? summarize(active) : null,
+      activeOrders: activeOrders.map(summarize)
     });
   }
 
@@ -396,16 +407,16 @@ function createService(options) {
     const existing = await repo.getUser(ctx.openid);
     if (existing) return bootstrap(ctx);
 
-    const users = await repo.listUsers();
-    if (users.length >= 2) fail(CODES.CLOSED, '本食堂只接待两位贵客');
-    if (users.some(user => user.role === role)) {
-      fail(CODES.ROLE_TAKEN, role === 'chef' ? '厨师已经有人当了' : '食客已经有人当了');
-    }
-
-    if (typeof repo.claimRoleSlot === 'function') {
-      const claimed = await repo.claimRoleSlot(role, ctx.openid);
-      if (!claimed) {
-        fail(CODES.ROLE_TAKEN, role === 'chef' ? '厨师已经有人当了' : '食客已经有人当了');
+    // 厨师只有一位；食客不设上限，谁进来都能点菜。
+    if (role === 'chef') {
+      const users = await repo.listUsers();
+      const chefCount = typeof repo.countUsersByRole === 'function'
+        ? await repo.countUsersByRole('chef')
+        : users.filter(user => user.role === 'chef').length;
+      if (chefCount > 0) fail(CODES.ROLE_TAKEN, '厨师已经有人当了');
+      if (typeof repo.claimRoleSlot === 'function') {
+        const claimed = await repo.claimRoleSlot('chef', ctx.openid);
+        if (!claimed) fail(CODES.ROLE_TAKEN, '厨师已经有人当了');
       }
     }
 
@@ -421,8 +432,8 @@ function createService(options) {
     try {
       await repo.createUser(user);
     } catch (error) {
-      if (typeof repo.releaseRoleSlot === 'function') {
-        await repo.releaseRoleSlot(role, ctx.openid);
+      if (role === 'chef' && typeof repo.releaseRoleSlot === 'function') {
+        await repo.releaseRoleSlot('chef', ctx.openid);
       }
       throw error;
     }

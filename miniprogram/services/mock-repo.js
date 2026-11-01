@@ -111,6 +111,15 @@ function createMockRepo() {
       return user ? clone(user) : null;
     },
 
+    async getFirstUserByRole(role) {
+      const user = state.users.find(item => item.role === role);
+      return user ? clone(user) : null;
+    },
+
+    async countUsersByRole(role) {
+      return state.users.filter(item => item.role === role).length;
+    },
+
     async createUser(user) {
       if (state.users.some(item => item._id === user._id)) {
         throw new Error('USER_EXISTS');
@@ -202,6 +211,15 @@ function createMockRepo() {
         .filter(order => !dinerOpenid || order.dinerOpenid === dinerOpenid)
         .sort(byNewest);
       return orders.length ? clone(orders[0]) : null;
+    },
+
+    async listActiveOrders() {
+      return clone(
+        state.orders
+          .filter(order => ACTIVE.indexOf(order.status) >= 0)
+          .sort(byNewest)
+          .slice(0, 20)
+      );
     },
 
     async findOrderByClientToken(dinerOpenid, token) {

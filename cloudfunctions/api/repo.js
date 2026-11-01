@@ -66,6 +66,16 @@ function createCloudRepo() {
     return missingDoc(res.data) ? null : res.data[0];
   }
 
+  async function getFirstUserByRole(role) {
+    const res = await db.collection('users').where({ role: role }).limit(1).get();
+    return missingDoc(res.data) ? null : res.data[0];
+  }
+
+  async function countUsersByRole(role) {
+    const res = await db.collection('users').where({ role: role }).count();
+    return Number(res.total) || 0;
+  }
+
   async function createUser(user) {
     const data = stripId(user);
     await db.collection('users').doc(user._id).set({ data: data });
@@ -130,6 +140,15 @@ function createCloudRepo() {
       .limit(1)
       .get();
     return missingDoc(res.data) ? null : res.data[0];
+  }
+
+  async function listActiveOrders() {
+    const res = await db.collection('orders')
+      .where({ status: _.in(ACTIVE) })
+      .orderBy('createdAt', 'desc')
+      .limit(20)
+      .get();
+    return res.data || [];
   }
 
   async function findOrderByClientToken(dinerOpenid, token) {
@@ -204,6 +223,8 @@ function createCloudRepo() {
     releaseRoleSlot: releaseRoleSlot,
     listUsers: listUsers,
     getUser: getUser,
+    getFirstUserByRole: getFirstUserByRole,
+    countUsersByRole: countUsersByRole,
     createUser: createUser,
     updateUser: updateUser,
     listDishes: listDishes,
@@ -214,6 +235,7 @@ function createCloudRepo() {
     deleteDish: deleteDish,
     getRecentOrdersByDiner: getRecentOrdersByDiner,
     findActiveOrder: findActiveOrder,
+    listActiveOrders: listActiveOrders,
     findOrderByClientToken: findOrderByClientToken,
     createOrder: createOrder,
     getOrder: getOrder,
